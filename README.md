@@ -13,7 +13,7 @@ Ouvrir l’adresse locale affichée par Vite. Les binaires ONNX nécessaires au 
 
 ## Fonctionnalités
 
-- Bibliothèque à trois zones : navigation, résultats et lecteur de conversations. Sur petit écran, le lecteur s’ouvre séparément et peut être refermé.
+- Bibliothèque avec navigation repliable et liste de résultats ; un clic ouvre la conversation dans une grande fenêtre de lecture défilante.
 - Recherche lexicale BM25 avec normalisation des accents, pondération du titre et extraits contextualisés.
 - Recherche sémantique réelle, facultative, avec `Xenova/paraphrase-multilingual-MiniLM-L12-v2` via Transformers.js dans un worker WASM. Activation explicite : téléchargement initial du modèle, puis calcul et cache locaux. Le seuil de similarité est un paramètre de la première version, pas une mesure de confiance.
 - Recherche hybride par fusion réciproque des rangs (constante 60).
@@ -59,7 +59,7 @@ La version navigateur produite dans `dist/` se sert avec `npm run preview`. Il f
 
 ## Limites et suite
 
-Cette version ne remplace pas encore tous les connecteurs de Threadback. Les prochaines étapes sont la validation des deux collecteurs, la pagination complète avec reprise et progression, les tests sur de gros historiques, puis les autres plateformes. La pertinence sémantique doit être évaluée sur des requêtes utilisateur représentatives. Les vecteurs sont parcourus linéairement dans cette version ; une bibliothèque très volumineuse nécessitera un index vectoriel adapté.
+Cette version ne remplace pas encore tous les connecteurs de Threadback. Les prochaines étapes sont la validation des collecteurs, la pagination complète avec reprise et progression, les tests sur de gros historiques, puis les autres plateformes. La pertinence sémantique doit être évaluée sur des requêtes utilisateur représentatives. Les vecteurs sont parcourus linéairement dans cette version ; une bibliothèque très volumineuse nécessitera un index vectoriel adapté.
 
 Le code tiers est fourni par les paquets npm et conserve ses licences respectives (React, Vite, Transformers.js, ONNX Runtime, idb, Lucide). Les poids du modèle sont distribués séparément par leur éditeur sur Hugging Face. Aucun code propriétaire de Threadback n’est intégré à l’application.
 
