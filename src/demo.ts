@@ -1,0 +1,47 @@
+import type { Conversation, Plateforme } from './model';
+
+const exemples: [string, Plateforme, string, string[], string, string, string][] = [
+  ['Architecture d’un moteur de recherche hybride', 'claude', '2026-10-28', ['Recherche', 'Architecture'], 'Projet Clair',
+    'Comment combiner une recherche lexicale et une recherche sémantique pour retrouver mes anciennes conversations ? Je voudrais surtout des résultats plus faciles à lire.',
+    'Une recherche hybride associe la précision des mots-clés à la compréhension du sens.\n\n### Une architecture en trois étapes\n1. La recherche lexicale utilise BM25 pour retrouver les expressions exactes, les noms propres et les références techniques.\n2. La recherche sémantique transforme les passages en vecteurs multilingues, puis compare leur proximité avec la question.\n3. La fusion réciproque des rangs réunit les deux listes, sans comparer directement leurs échelles de scores.\n\n### Rendre les résultats lisibles\nPrésentez une ligne par conversation, plusieurs extraits contextualisés et une indication de l’origine de chaque correspondance. Un panneau de lecture permet d’explorer le fil sans perdre sa recherche.'],
+  ['Des résultats que l’on a vraiment envie de lire', 'chatgpt', '2026-10-27', ['Design', 'Recherche'], 'Projet Clair',
+    'Je cherche une interface claire pour explorer des résultats de recherche dans un historique de discussions. Comment organiser la page ?',
+    'L’interface doit vous permettre de reconnaître une conversation avant même de l’ouvrir.\n\nLe titre et la provenance constituent le premier niveau de lecture. Un extrait de quatre à six lignes donne ensuite le contexte de la correspondance. Gardez les dates et les tags dans une zone plus discrète.\n\nUne disposition à trois colonnes fonctionne bien : navigation à gauche, résultats au centre et conversation à droite. La largeur du panneau de lecture doit pouvoir augmenter lorsque le contenu devient dense.\n\nLes mots recherchés sont surlignés avec une teinte douce. Les résultats sémantiques portent une mention explicite, car leurs phrases peuvent ne contenir aucun mot de la requête.'],
+  ['Embeddings multilingues : quel modèle choisir ?', 'gemini', '2026-10-25', ['IA locale', 'Recherche'], 'Veille & apprentissage',
+    'Quel modèle local utiliser pour chercher dans des textes français et anglais sans envoyer mes données sur un serveur ?',
+    'Un modèle d’embeddings multilingue est adapté à cette bibliothèque. MiniLM multilingue offre un compromis intéressant entre taille, vitesse et compréhension des deux langues.\n\nLe calcul peut se dérouler dans le navigateur avec WASM. Le premier chargement télécharge les poids ; les textes restent sur votre appareil pendant l’inférence.\n\nDécoupez les messages longs en passages qui se chevauchent. Conservez l’identifiant du message et la position du passage pour revenir précisément à la bonne phrase.'],
+  ['Retrouver une idée sans se souvenir des mots', 'claude', '2026-10-23', ['Mémoire', 'Recherche'], 'Veille & apprentissage',
+    'J’avais parlé de ranger automatiquement mes discussions, mais je ne sais plus quels termes j’avais employés. Comment retrouver cette idée ?',
+    'La recherche par sens permet de retrouver une idée même lorsque le vocabulaire est différent. Une question comme « ranger mes discussions » peut rapprocher des passages consacrés à la classification automatique, aux collections et à l’organisation d’une bibliothèque.\n\nPour rester compréhensible, le résultat doit afficher le passage qui a produit la correspondance, sa conversation d’origine et les messages voisins. L’utilisateur peut ainsi juger lui-même de la pertinence.'],
+  ['IndexedDB : une bibliothèque qui reste chez soi', 'chatgpt', '2026-10-21', ['Données', 'IA locale'], 'Projet Clair',
+    'Comment stocker une bibliothèque de conversations dans le navigateur et éviter de tout perdre en rechargeant la page ?',
+    'IndexedDB conserve les conversations de manière structurée sur votre appareil. Séparez les métadonnées, les messages et les vecteurs si la bibliothèque devient importante.\n\nUtilisez des transactions pour les imports et dédupliquez les conversations avec un identifiant stable. Prévoyez un export JSON explicite : le stockage du navigateur peut être effacé et ne remplace pas une sauvegarde.\n\nUne migration de schéma doit préserver les données existantes. Affichez les erreurs de sauvegarde pour que l’utilisateur sache si ses dernières modifications ont été conservées.'],
+  ['Les bons filtres de date pour une recherche', 'deepseek', '2026-10-19', ['Recherche', 'Produit'], 'Projet Clair',
+    'Pour filtrer mes conversations, dois-je utiliser la date de création ou la date de dernière activité ?',
+    'La dernière activité est généralement la date la plus utile pour retrouver une discussion. Indiquez explicitement le champ utilisé.\n\nProposez des périodes rapides : sept derniers jours, trente derniers jours, cette année et toutes les dates. Ajoutez un intervalle personnalisé avec une borne de fin inclusive.\n\nLes filtres doivent se combiner : une plateforme ET une période ET un dossier. À l’intérieur d’un filtre de plateformes, les choix multiples se combinent par OU.'],
+  ['Une promenade photographique à Paris', 'gemini', '2026-10-17', ['Photo', 'Paris'], 'Personnel',
+    'Propose-moi une promenade à Paris pour photographier les façades et les lumières en fin de journée.',
+    'Commencez près du Palais-Royal, puis traversez les passages couverts. Les galeries offrent des lignes de fuite et des détails architecturaux intéressants.\n\nGardez la dernière heure de lumière pour les quais de Seine. Préférez un objectif léger et observez les reflets dans les vitrines. Quelques images cohérentes racontent mieux la promenade qu’une collection de points de vue sans lien.'],
+  ['Structurer une note de lecture utile', 'claude', '2026-10-14', ['Écriture', 'Mémoire'], 'Veille & apprentissage',
+    'Comment transformer mes lectures en notes que je vais réellement réutiliser ?',
+    'Une note utile commence par une question. Résumez ensuite l’idée avec vos propres mots, conservez une citation courte si nécessaire et ajoutez un exemple personnel.\n\nReliez la note à un projet en cours. Une bibliothèque de connaissances devient plus utile lorsqu’elle permet de retrouver des connexions, plutôt que d’accumuler des résumés.'],
+  ['Concevoir une API de synchronisation robuste', 'mistral', '2026-10-10', ['Architecture', 'Données'], 'Projet Clair',
+    'Comment reprendre une synchronisation interrompue sans créer de doublons ?',
+    'Conservez un curseur de pagination et enregistrez les conversations au fur et à mesure. Les écritures doivent être idempotentes : une même conversation reçue deux fois met à jour le même enregistrement.\n\nDistinguez une interruption réseau d’un changement de format de l’API. La première se réessaie avec un délai progressif ; le second doit être signalé pour éviter d’enregistrer des données incomplètes.'],
+  ['Choisir une palette calme et accessible', 'chatgpt', '2026-10-04', ['Design', 'Accessibilité'], 'Inspirations',
+    'Je voudrais une palette apaisante pour une application de lecture, avec suffisamment de contraste.',
+    'Partez d’un fond blanc cassé, d’une couleur d’encre sombre et d’une couleur d’accent mesurée. Un vert profond peut donner un repère stable aux actions principales.\n\nLa couleur ne doit jamais être le seul moyen de comprendre un état. Associez un libellé aux badges et vérifiez le contraste du texte secondaire. Pour les longs contenus, une hauteur de ligne généreuse réduit la fatigue.'],
+  ['Exporter ses conversations pour les garder', 'deepseek', '2026-09-22', ['Données', 'Mémoire'], 'Personnel',
+    'Je voudrais garder mes discussions dans un format indépendant de l’application. JSON ou Markdown ?',
+    'Utilisez les deux formats pour des usages différents. Le JSON conserve la structure, les identifiants et les métadonnées : il sert à restaurer votre bibliothèque. Le Markdown facilite la lecture et les notes dans un éditeur.\n\nVérifiez qu’un export suivi d’un import conserve les rôles, les dates et l’ordre des messages. Prévoyez une version de format pour faire évoluer les sauvegardes.'],
+  ['Planifier un week-end au bord de la mer', 'mistral', '2026-09-08', ['Voyage'], 'Personnel',
+    'Aide-moi à organiser un week-end calme en Bretagne, avec des balades et de bons moments de lecture.',
+    'Choisissez un seul point de chute et limitez les déplacements. Réservez une demi-journée pour une promenade côtière et gardez un créneau libre selon la météo.\n\nEmportez un livre et prévoyez une alternative à l’intérieur. Le meilleur programme laisse de la place pour une découverte imprévue.'],
+];
+export function creer_demo(): Conversation[] {
+  return exemples.map(([titre, plateforme, date, tags, dossier, question, reponse], index) => ({
+    id: `demo-${index}`, titre, plateforme, cree_le: `${date}T09:00:00.000Z`, modifie_le: `${date}T14:30:00.000Z`,
+    tags, dossier, favori: index === 0 || index === 2 || index === 7,
+    messages: [{ id: `demo-${index}-u`, role: 'user', contenu: question }, { id: `demo-${index}-a`, role: 'assistant', contenu: reponse }],
+  }));
+}

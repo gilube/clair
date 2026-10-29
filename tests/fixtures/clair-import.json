@@ -1,0 +1,13 @@
+{
+  "format": "clair", "version": 1,
+  "conversations": [{
+    "id": "claude:verification-import", "titre": "Vérification de l’import local", "plateforme": "claude",
+    "cree_le": "2026-10-27T09:00:00Z", "modifie_le": "2026-10-27T18:00:00Z",
+    "messages": [
+      {"id":"question-test","role":"user","contenu":"Comment retrouver mes notes sur la photographie ?"},
+      {"id":"reponse-test","role":"assistant","contenu":"Classez vos notes dans un dossier Photographie et utilisez la recherche pour retrouver les passages sur la lumière et le cadrage."}
+    ],
+    "tags": ["Photographie"], "dossier": "Tests locaux", "favori": true
+  }],
+  "collections": [{"id":"collection-test","nom":"Photographie","requete":"photographie","mode":"lexicale","filtres":{"plateformes":[],"debut":"","fin":"","dossier":"","tag":"","favoris":false}}]
+}
